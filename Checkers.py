@@ -61,6 +61,7 @@ def main():
         screen.fill((255, 255, 255))
 
         pygame.draw.rect(screen, (0, 0, 0), (800, 0, 200, 800))
+        pygame.draw.rect(screen, (255, 255, 255), (800, 0, 1, 800))
         if(turn == 1):
             pygame.draw.rect(screen, (255, 0, 255), (850, 350, 100, 100))
             text_surface = GAME_FONT.render("Pink", True, (255, 0, 255))
@@ -73,6 +74,13 @@ def main():
             screen.blit(text_surface, (875, 320))
             text_surface = GAME_FONT.render("Turn:", True, (0, 255, 255))
             screen.blit(text_surface, (875, 300))
+
+        text_surface = GAME_FONT.render("Guidance:", True, (255, 255, 255))
+        screen.blit(text_surface, (825, 600))
+        text_surface = GAME_FONT.render(str(guidance), True, (255, 255, 255))
+        screen.blit(text_surface, (925, 600))
+
+
 
         
 
@@ -101,7 +109,7 @@ def main():
             pygame.draw.rect(screen, (255, 0, 0), (selX * cellSide, selY * (cellSide), cellSide, cellSide))
             for i in range(8):
                 for j in range(8):
-                    if(abs(selX - j) == 1 and abs(selY - i) == 1 and board[i][j] == 0):
+                    if((board[selY][selX] == 3 or board[selY][selX] == 4) and abs(selX - j) == 1 and abs(selY - i) == 1 and board[i][j] == 0):
                         board2[i][j] = 2
                         pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
                     # elif(board[i][j] == 0 and abs(selX - j) == 2 and abs(selY - i) == 2 and ((abs(selX - 1 - j) == 1 and abs(selY - 1 - i) == 1) or (abs(selX + 1 - j) == 1 and abs(selY - 1 - i) == 1) or (abs(selX - 1 - j) == 1 and abs(selY + 1 - i) == 1) or (abs(selX + 1 - j) == 1 and abs(selY + 1 - i) == 1))):
@@ -109,8 +117,17 @@ def main():
                     # elif((board[i][j] == 0 and abs(selX - j) == 2 and abs(selY - i) == 2)):
                     #     pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
 
-                    elif(board2[i][j] != 1):
-                        board2[i][j] = 0
+                    if((board[selY][selX] == 1) and abs(selX - j) == 1 and i - selY == 1 and board[i][j] == 0):
+                        board2[i][j] = 2
+                        pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
+                    if((board[selY][selX] == 2) and abs(selX - j) == 1 and selY - i == 1 and board[i][j] == 0):
+                        board2[i][j] = 2
+                        pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
+
+                    # elif(board2[i][j] != 1):
+                    #     board2[i][j] = 0
+
+
         pygame.draw.rect(screen, (0, 255, 0), (cellSide * xIdx, cellSide * yIdx, cellSide, cellSide))
 
         for i in range(8):
