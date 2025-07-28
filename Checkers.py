@@ -9,6 +9,8 @@ import random
 pygame.init()
 
 
+GAME_FONT = pygame.font.Font(None, 24)
+GAME_FONT2 = pygame.font.Font(None, 36)
 
 def ZeroField(n):
     return [[0] * n for i in range(n)]
@@ -61,8 +63,27 @@ def main():
         pygame.draw.rect(screen, (0, 0, 0), (800, 0, 200, 800))
         if(turn == 1):
             pygame.draw.rect(screen, (255, 0, 255), (850, 350, 100, 100))
+            text_surface = GAME_FONT.render("Pink", True, (255, 0, 255))
+            screen.blit(text_surface, (875, 320))
+            text_surface = GAME_FONT.render("Turn:", True, (255, 0, 255))
+            screen.blit(text_surface, (875, 300))
         else:
             pygame.draw.rect(screen, (0, 255, 255), (850, 350, 100, 100))
+            text_surface = GAME_FONT.render("Blue", True, (0, 255, 255))
+            screen.blit(text_surface, (875, 320))
+            text_surface = GAME_FONT.render("Turn:", True, (0, 255, 255))
+            screen.blit(text_surface, (875, 300))
+
+        
+
+        text_surface = GAME_FONT2.render("Pieces Left:", True, (255, 0, 255))
+        screen.blit(text_surface, (820, 100))
+        text_surface = GAME_FONT2.render(str(piecesLeftPink), True, (255, 0, 255))
+        screen.blit(text_surface, (870, 120))
+        text_surface = GAME_FONT2.render("Pieces Left:", True, (0, 255, 255))
+        screen.blit(text_surface, (820, 500))
+        text_surface = GAME_FONT2.render(str(piecesLeftBlue), True, (0, 255, 255))
+        screen.blit(text_surface, (870, 520))
         
         
 
@@ -148,7 +169,17 @@ def main():
                 board[0][x] = 4
 
 
-
+        # Counts pieces
+        p = 0
+        b = 0
+        for y in range(8):
+            for x in range(8):
+                if(board[y][x] == 1):
+                    p += 1
+                if(board[y][x] == 2):
+                    b += 1
+        piecesLeftBlue = b
+        piecesLeftPink = p
 
 
         for events in pygame.event.get():
