@@ -20,7 +20,7 @@ def main():
     side = 800
     cellSide = side/8
     selected = False
-    screen = pygame.display.set_mode((side, side))
+    screen = pygame.display.set_mode((side + 200, side))
     running = True
     guidance = False
     xIdx = 4
@@ -30,6 +30,8 @@ def main():
     turn = 1
     OneLoss = 0
     TwoLoss = 0
+    piecesLeftBlue = 12
+    piecesLeftPink = 12
 
     board = [
         [1, 0, 1, 0, 1, 0, 1, 0],
@@ -56,7 +58,11 @@ def main():
         pygame.display.flip()
         screen.fill((255, 255, 255))
 
-
+        pygame.draw.rect(screen, (0, 0, 0), (800, 0, 200, 800))
+        if(turn == 1):
+            pygame.draw.rect(screen, (255, 0, 255), (850, 350, 100, 100))
+        else:
+            pygame.draw.rect(screen, (0, 255, 255), (850, 350, 100, 100))
         
         
 
@@ -171,13 +177,12 @@ def main():
                 elif events.key == pygame.K_SPACE:
                     if(selected == False):
                         if(board2[xIdx][yIdx] == 0 and board[yIdx][xIdx] != 0):
-                            if((turn == 1 and board[yIdx][xIdx] == 1) or (turn == 2 and board[yIdx][xIdx] == 2)):
+                            if((turn == 1 and (board[yIdx][xIdx] == 1 or board[yIdx][xIdx] == 3)) or (turn == 2 and (board[yIdx][xIdx] == 2 or board[yIdx][xIdx] == 4))):
                                 selected = True
                                 selX = xIdx
                                 selY = yIdx
                     else:
                         if((abs(selX - xIdx) == 1 and abs(selY - yIdx) == 1) and (board[selY][selX] == 3 or board[selY][selX] == 4)):
-                            print("a")
                             a = board[yIdx][xIdx]
                             # if(board[yIdx][xIdx] == 0 or board[selY][selX] == 0):
                             board[yIdx][xIdx] = board[selY][selX]
@@ -193,6 +198,7 @@ def main():
                                     turn = 1
                         else:
                             print(selY, selX, board[selY][selX])
+                        
 
 
                         # if((abs(selX - xIdx) == 2 and abs(selY - yIdx) == 2)):
@@ -250,7 +256,7 @@ def main():
                                 else:
                                     turn = 1
                         
-                        if((abs(selX - xIdx) == 2 and yIdx - selY and board[selY][selX] == 1)):
+                        if((abs(selX - xIdx) == 2 and yIdx - selY == 2 and board[selY][selX] == 1)):
                             a = board[yIdx][xIdx]
                             board[yIdx][xIdx] = board[selY][selX]
                             board[selY][selX] = a
@@ -272,6 +278,27 @@ def main():
                                     turn = 1
                         
                         if((abs(selX - xIdx) == 2 and selY - yIdx == 2 == 2 and board[selY][selX] == 2)):
+                            a = board[yIdx][xIdx]
+                            board[yIdx][xIdx] = board[selY][selX]
+                            board[selY][selX] = a
+                            if(board[yIdx][xIdx] != 0 and board[selY][selX] != 0):
+                                a = board[yIdx][xIdx]
+                                board[yIdx][xIdx] = board[selY][selX]
+                                board[selY][selX] = a
+                            else:
+                                # if(abs(selX - xIdx - 1) == 1 and abs(selY - yIdx - 1) == 1 and board[xIdx][yIdx] != 0):
+                                #     board[xIdx][yIdx] = 0
+                                for x in range (len(board)):
+                                    for y in range(len(board)):
+                                        if(abs(selX - x) == 1 and abs(selY - y) == 1 and board[y][x] != 0 and abs(x - xIdx) == 1 and abs(y - yIdx) == 1):
+                                            board[y][x] = 0
+
+                                if(turn == 1):
+                                    turn = 2
+                                else:
+                                    turn = 1
+                        selected = False
+                        if((abs(selX - xIdx) == 2 and abs(selY - yIdx) == 2 == 2 and (board[selY][selX] == 3 or board[selY][selX] == 4))):
                             a = board[yIdx][xIdx]
                             board[yIdx][xIdx] = board[selY][selX]
                             board[selY][selX] = a
