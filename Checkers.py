@@ -16,25 +16,21 @@ def ZeroField(n):
 def BetterZeroField(x, y):
     return [[0] * x for i in range(y)]
 
-def checkTake(board, cellSide, selX, selY):
-    for x in range(cellSide):
-        for y in range(cellSide):
-            if(abs(selX - x) == 2 and abs(selY - y) == 2 and board[x][y] == 0):
-                return True
-    return False
-
-
 def main():
     side = 800
     cellSide = side/8
     selected = False
     screen = pygame.display.set_mode((side, side))
     running = True
+    guidance = False
     xIdx = 4
     yIdx = 4
     selX = 0
     selY = 0
     turn = 1
+    OneLoss = 0
+    TwoLoss = 0
+
     board = [
         [1, 0, 1, 0, 1, 0, 1, 0],
         [0, 1, 0, 1, 0, 1, 0, 1],
@@ -45,6 +41,7 @@ def main():
         [2, 0, 2, 0, 2, 0, 2, 0],
         [0, 2, 0, 2, 0, 2, 0, 2],
         ]
+    # 
     
     board2 = [[0, 1, 0, 1, 0, 1, 0, 1], 
               [1, 0, 1, 0, 1, 0, 1, 0],
@@ -69,16 +66,22 @@ def main():
                 pygame.draw.rect(screen, (0, 0, 0), (cellSide * 2 * j, cellSide * 2 * i, cellSide, cellSide))
                 pygame.draw.rect(screen, (0, 0, 0), ((2 * j + 1) * cellSide, (2 * i + 1) * (cellSide), cellSide, cellSide))
 
+
+
+
         
-        if(selected == True):
+        if(selected == True and guidance == True):
             pygame.draw.rect(screen, (255, 0, 0), (selX * cellSide, selY * (cellSide), cellSide, cellSide))
             for i in range(8):
                 for j in range(8):
                     if(abs(selX - j) == 1 and abs(selY - i) == 1 and board[i][j] == 0):
                         board2[i][j] = 2
                         pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
-                    elif(board[i][j] == 0 and abs(selX - j) == 2 and abs(selY - i) == 2):
-                        pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
+                    # elif(board[i][j] == 0 and abs(selX - j) == 2 and abs(selY - i) == 2 and ((abs(selX - 1 - j) == 1 and abs(selY - 1 - i) == 1) or (abs(selX + 1 - j) == 1 and abs(selY - 1 - i) == 1) or (abs(selX - 1 - j) == 1 and abs(selY + 1 - i) == 1) or (abs(selX + 1 - j) == 1 and abs(selY + 1 - i) == 1))):
+                    
+                    # elif((board[i][j] == 0 and abs(selX - j) == 2 and abs(selY - i) == 2)):
+                    #     pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
+
                     elif(board2[i][j] != 1):
                         board2[i][j] = 0
         pygame.draw.rect(screen, (0, 255, 0), (cellSide * xIdx, cellSide * yIdx, cellSide, cellSide))
@@ -91,16 +94,40 @@ def main():
                     pygame.draw.circle(screen, (0, 255, 255), (j * cellSide + 49, i * cellSide + 49), 49)
 
         
-        
-                        
-            
-        
+        # if(selected == True):
+        #         for x in range (len(board)):
+        #             for y in range(len(board)):
+        #                 if(board[selY][selX] == 0):
+        #                     if(abs(selX - x) == 1 and abs(selY - y) == 1 and board[y][x] != 0 and abs(x - xIdx) == 1 and abs(y - yIdx) == 1):
+        #                         pygame.draw.rect(screen, (255, 0, 0), (x * cellSide, cellSide * y, cellSide, cellSide))
 
 
 
         
 
-        
+        # Check for win
+
+        for y in range(8):
+            for x in range(8):
+                if(board[x][y] != 1):
+                    OneLoss += 1
+        if(OneLoss == 64):
+            print("Blue win")
+            running = False
+        else:
+            OneLoss = 0
+
+        for y in range(8):
+            for x in range(8):
+                if(board[x][y] != 2):
+                    TwoLoss += 1
+        if(TwoLoss == 64):
+            print("Pink win")
+            running = False
+        else:
+            TwoLoss = 0
+
+
 
 
         for events in pygame.event.get():
@@ -119,6 +146,11 @@ def main():
                 elif events.key == pygame.K_DOWN:
                     if(yIdx < 7):
                         yIdx += 1
+                elif events.key == pygame.K_1:
+                    if(guidance == False):
+                        guidance = True
+                    else:
+                        guidance = False
                 elif events.key == pygame.K_SPACE:
                     if(selected == False):
                         if(board2[xIdx][yIdx] == 0 and board[yIdx][xIdx] != 0):
@@ -133,8 +165,6 @@ def main():
                             # if(board[yIdx][xIdx] == 0 or board[selY][selX] == 0):
                             board[yIdx][xIdx] = board[selY][selX]
                             board[selY][selX] = a
-                            print(board[yIdx][xIdx])
-                            print(board[selY][selY])
                             if(board[yIdx][xIdx] != 0 and board[selY][selX] != 0):
                                 a = board[yIdx][xIdx]
                                 board[yIdx][xIdx] = board[selY][selX]
@@ -148,8 +178,6 @@ def main():
                             a = board[yIdx][xIdx]
                             board[yIdx][xIdx] = board[selY][selX]
                             board[selY][selX] = a
-                            print(board[yIdx][xIdx])
-                            print(board[selY][selY])
                             if(board[yIdx][xIdx] != 0 and board[selY][selX] != 0):
                                 a = board[yIdx][xIdx]
                                 board[yIdx][xIdx] = board[selY][selX]
@@ -159,7 +187,7 @@ def main():
                                 #     board[xIdx][yIdx] = 0
                                 for x in range (len(board)):
                                     for y in range(len(board)):
-                                        if(abs(selX - x) == 1 and abs(selY - y) == 1 and board[y][x] != 0 and abs):
+                                        if(abs(selX - x) == 1 and abs(selY - y) == 1 and board[y][x] != 0 and abs(x - xIdx) == 1 and abs(y - yIdx) == 1):
                                             board[y][x] = 0
 
                                 if(turn == 1):
