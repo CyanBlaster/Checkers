@@ -112,7 +112,7 @@ def main():
                     if((board[selY][selX] == 3 or board[selY][selX] == 4) and abs(selX - j) == 1 and abs(selY - i) == 1 and board[i][j] == 0):
                         board2[i][j] = 2
                         pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
-                    # elif(board[i][j] == 0 and abs(selX - j) == 2 and abs(selY - i) == 2 and ((abs(selX - 1 - j) == 1 and abs(selY - 1 - i) == 1) or (abs(selX + 1 - j) == 1 and abs(selY - 1 - i) == 1) or (abs(selX - 1 - j) == 1 and abs(selY + 1 - i) == 1) or (abs(selX + 1 - j) == 1 and abs(selY + 1 - i) == 1))):
+                    
                     
                     # elif((board[i][j] == 0 and abs(selX - j) == 2 and abs(selY - i) == 2)):
                     #     pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
@@ -123,6 +123,15 @@ def main():
                     if((board[selY][selX] == 2) and abs(selX - j) == 1 and selY - i == 1 and board[i][j] == 0):
                         board2[i][j] = 2
                         pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
+
+
+
+                    
+                    # elif(board[i][j] == 0 and abs(selX - j) == 2 and abs(selY - i) == 2 and ((abs(selX - 1 - j) == 1 and abs(selY - 1 - i) == 1) or (abs(selX + 1 - j) == 1 and abs(selY - 1 - i) == 1) or (abs(selX - 1 - j) == 1 and abs(selY + 1 - i) == 1) or (abs(selX + 1 - j) == 1 and abs(selY + 1 - i) == 1))):
+                    
+                    if((abs(j - 1 - selX) == 1 and abs(i - 1 - selY) == 1 and selY > 0 and selX > 0 and board[selY - 1][selX - 1] == 0) or (abs(j - 1 - selX) == 1 and abs(i + 1 - selY) == 1) or (abs(j + 1 - selX) == 1 and abs(i + 1 - selY) == 1) or (abs(j + 1 - selX) == 1 and abs(i - 1 - selY) == 1)):
+                        if(abs(j - selX) == 2 and abs(i - selY) == 2 and board[j][i] == 0):
+                            pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
 
                     # elif(board2[i][j] != 1):
                     #     board2[i][j] = 0
@@ -318,7 +327,9 @@ def main():
                                 for x in range (len(board)):
                                     for y in range(len(board)):
                                         if(abs(selX - x) == 1 and abs(selY - y) == 1 and board[y][x] != 0 and abs(x - xIdx) == 1 and abs(y - yIdx) == 1):
-                                            board[y][x] = 0
+                                            if((turn == 1 and board[y][x] == 2) or (turn == 2 and board[y][x] == 1)):
+                                                print("Delete at", x, y)
+                                                board[y][x] = 0
 
                                 if(turn == 1):
                                     turn = 2
@@ -339,7 +350,9 @@ def main():
                                 for x in range (len(board)):
                                     for y in range(len(board)):
                                         if(abs(selX - x) == 1 and abs(selY - y) == 1 and board[y][x] != 0 and abs(x - xIdx) == 1 and abs(y - yIdx) == 1):
-                                            board[y][x] = 0
+                                            if((turn == 1 and board[y][x] == 2) or (turn == 2 and board[y][x] == 1)):
+                                                print("Delete at", x, y)
+                                                board[y][x] = 0
 
                                 if(turn == 1):
                                     turn = 2
@@ -360,7 +373,9 @@ def main():
                                 for x in range (len(board)):
                                     for y in range(len(board)):
                                         if(abs(selX - x) == 1 and abs(selY - y) == 1 and board[y][x] != 0 and abs(x - xIdx) == 1 and abs(y - yIdx) == 1):
-                                            board[y][x] = 0
+                                            if((turn == 1 and board[y][x] == 2) or (turn == 2 and board[y][x] == 1)):
+                                                print("Delete at", x, y)
+                                                board[y][x] = 0
 
                                 if(turn == 1):
                                     turn = 2
