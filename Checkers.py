@@ -79,6 +79,10 @@ def main():
         screen.blit(text_surface, (825, 600))
         text_surface = GAME_FONT.render(str(guidance), True, (255, 255, 255))
         screen.blit(text_surface, (925, 600))
+        text_surface = GAME_FONT.render("Press 1 to turn", True, (255, 255, 255))
+        screen.blit(text_surface, (840, 700))
+        text_surface = GAME_FONT.render("guidance on or off", True, (255, 255, 255))
+        screen.blit(text_surface, (825, 720))
 
 
 
@@ -129,9 +133,9 @@ def main():
                     
                     # elif(board[i][j] == 0 and abs(selX - j) == 2 and abs(selY - i) == 2 and ((abs(selX - 1 - j) == 1 and abs(selY - 1 - i) == 1) or (abs(selX + 1 - j) == 1 and abs(selY - 1 - i) == 1) or (abs(selX - 1 - j) == 1 and abs(selY + 1 - i) == 1) or (abs(selX + 1 - j) == 1 and abs(selY + 1 - i) == 1))):
                     
-                    if((abs(j - 1 - selX) == 1 and abs(i - 1 - selY) == 1 and selY > 0 and selX > 0 and board[selY - 1][selX - 1] == 0) or (abs(j - 1 - selX) == 1 and abs(i + 1 - selY) == 1) or (abs(j + 1 - selX) == 1 and abs(i + 1 - selY) == 1) or (abs(j + 1 - selX) == 1 and abs(i - 1 - selY) == 1)):
-                        if(abs(j - selX) == 2 and abs(i - selY) == 2 and board[j][i] == 0):
-                            pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
+                    # if((abs(j - 1 - selX) == 1 and abs(i - 1 - selY) == 1 and selY > 0 and selX > 0 and board[selY - 1][selX - 1] == 0) or (abs(j - 1 - selX) == 1 and abs(i + 1 - selY) == 1 and selY < 7 and selX > 0 and board[selY + 1][selX - 1] == 0) or (abs(j + 1 - selX) == 1 and abs(i + 1 - selY) == 1 and selY < 7 and selX < 7 and board[selY + 1][selX + 1] == 0) or (abs(j + 1 - selX) == 1 and abs(i - 1 - selY) == 1 and selY > 0 and selX < 7 and board[selY + 1][selX - 1] == 0)):
+                    #     if(abs(j - selX) == 2 and abs(i - selY) == 2 and board[j][i] == 0):
+                    #         pygame.draw.rect(screen, (255, 0, 0), (j * cellSide, cellSide * i, cellSide, cellSide))
 
                     # elif(board2[i][j] != 1):
                     #     board2[i][j] = 0
@@ -233,11 +237,14 @@ def main():
                     print(board)
                 elif events.key == pygame.K_SPACE:
                     if(selected == False):
-                        if(board2[xIdx][yIdx] == 0 and board[yIdx][xIdx] != 0):
+                        if(board2[xIdx][yIdx] != 1 and board[yIdx][xIdx] != 0):
+                            # Le problemo
                             if((turn == 1 and (board[yIdx][xIdx] == 1 or board[yIdx][xIdx] == 3)) or (turn == 2 and (board[yIdx][xIdx] == 2 or board[yIdx][xIdx] == 4))):
                                 selected = True
                                 selX = xIdx
                                 selY = yIdx
+                            else:
+                                print("turn:", turn, yIdx, xIdx, board[yIdx][xIdx])
                     else:
                         if((abs(selX - xIdx) == 1 and abs(selY - yIdx) == 1) and (board[selY][selX] == 3 or board[selY][selX] == 4)):
                             a = board[yIdx][xIdx]
@@ -253,8 +260,7 @@ def main():
                                     turn = 2
                                 else:
                                     turn = 1
-                        else:
-                            print(selY, selX, board[selY][selX])
+                        
                         
 
 
@@ -281,7 +287,7 @@ def main():
                         # selected = False
 
 
-                        if((abs(selX - xIdx) == 1 and yIdx - selY == 1) and board[selY][selX] == 1):
+                        elif((abs(selX - xIdx) == 1 and yIdx - selY == 1) and board[selY][selX] == 1):
 
                             a = board[yIdx][xIdx]
                             # if(board[yIdx][xIdx] == 0 or board[selY][selX] == 0):
@@ -297,7 +303,7 @@ def main():
                                 else:
                                     turn = 1
 
-                        if((abs(selX - xIdx) == 1 and selY - yIdx == 1) and board[selY][selX] == 2):
+                        elif((abs(selX - xIdx) == 1 and selY - yIdx == 1) and board[selY][selX] == 2):
 
                             a = board[yIdx][xIdx]
                             # if(board[yIdx][xIdx] == 0 or board[selY][selX] == 0):
@@ -313,7 +319,7 @@ def main():
                                 else:
                                     turn = 1
                         
-                        if((abs(selX - xIdx) == 2 and yIdx - selY == 2 and board[selY][selX] == 1)):
+                        elif((abs(selX - xIdx) == 2 and yIdx - selY == 2 and board[selY][selX] == 1)):
                             a = board[yIdx][xIdx]
                             board[yIdx][xIdx] = board[selY][selX]
                             board[selY][selX] = a
@@ -336,7 +342,7 @@ def main():
                                 else:
                                     turn = 1
                         
-                        if((abs(selX - xIdx) == 2 and selY - yIdx == 2 == 2 and board[selY][selX] == 2)):
+                        elif((abs(selX - xIdx) == 2 and selY - yIdx == 2 == 2 and board[selY][selX] == 2)):
                             a = board[yIdx][xIdx]
                             board[yIdx][xIdx] = board[selY][selX]
                             board[selY][selX] = a
@@ -358,8 +364,8 @@ def main():
                                     turn = 2
                                 else:
                                     turn = 1
-                        selected = False
-                        if((abs(selX - xIdx) == 2 and abs(selY - yIdx) == 2 == 2 and (board[selY][selX] == 3 or board[selY][selX] == 4))):
+
+                        elif((abs(selX - xIdx) == 2 and abs(selY - yIdx) == 2 == 2 and (board[selY][selX] == 3 or board[selY][selX] == 4))):
                             a = board[yIdx][xIdx]
                             board[yIdx][xIdx] = board[selY][selX]
                             board[selY][selX] = a
